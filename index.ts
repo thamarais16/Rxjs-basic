@@ -78,9 +78,9 @@ froms2.subscribe(
 function *gen(){
   let i = 0;
   while(i < 5){
-    i = i + 1
+    i = i + 1;
     yield i;
-  };
+  };//1,2,3,4,5
 }
 
 
