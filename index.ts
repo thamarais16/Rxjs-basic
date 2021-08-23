@@ -2,7 +2,6 @@ import './style.css';
 
 import { 
   Observable,
-  map,
   tap,
   of,  
   timer,
