@@ -6,7 +6,8 @@ import {
   tap,
   of,  
   timer,
-  interval 
+  interval ,
+  from
 } from 'rxjs';
 
 /**
@@ -25,24 +26,62 @@ let create = Observable.create(observer => {
   setTimeout(()=>{ observer.next("Hi") },2000);
   setTimeout(()=>{ observer.next("Thamarai") },4000);
   setTimeout(()=>{ observer.next("How are you") },6000);
+  setTimeout(()=>{ observer.complete() },7000);
 }).pipe(
-  tap(val => {debugger; console.log("tap "+ val)}),
+  tap(val => { console.log("tap "+ val)}),
 );
 
 /* create.subscribe(
   val => console.log(val),
   err => console.log(err),
   () => console.log("emit completed")
-); *//
+); */
 
 /**2 */
-let obs = of([1,2,3], 100, "Hello");
+let ofs = of([1,2,3], 100, "Hello");
 
-obs.subscribe(
-  (val)=> {console.log(val)},
-  (err)=> {console.log(err)},
-  ()=> {console.log("completed")},
-)
+// ofs.subscribe(
+//   (val)=> {console.log(val)},
+//   (err)=> {console.log(err)},
+//   ()=> {console.log("ofs completed")},
+// );
+
+let ofs2 = of(["Thamarai"], ["selvan"]);
+
+// ofs2.subscribe(
+//   (val)=> { console.log(val) },
+//   (err)=> {  console.log(err) },
+//   ()=> {  console.log("ofs2 completed") },
+// );
+
+/**3 */
+let map = new Map();
+map.set(1, 'abc').set(2, 'def').set(3, 'ghi');
+
+let froms = from(map)
+
+froms.subscribe(
+  (val) => { console.log(val); },
+  (err) => { console.log(err); },
+  () => { console.log("froms completed"); }
+);
+
+
+
+let froms2 = from(gen())
+
+froms2.subscribe(
+  (val) => { console.log(val); },
+  (err) => { console.log(err); },
+  () => { console.log("froms2 completed"); }
+);
+
+function *gen(){
+  let i = 0;
+  while(i < 5){
+    yield i;
+  };
+}
 
 
 
