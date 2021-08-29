@@ -27,6 +27,8 @@ delay
  * @description delay Operator delay the emission of item from source observable by a given timeout.
  * 
  * @description delayWhen Operator delay the emission of item from source observable by a given timeout determined by the emissions of another observable.
+ * 
+ * @description timer After given duration, emit numbers in sequence every specified duration
 */
 
 
@@ -154,7 +156,7 @@ of(1, 2, 3, 4, 5)
   in this case we will emit first value after 1 second and subsequent
   values every 2 seconds after
 */
-const source = timer(1000, 2000);
+const source = timer(2000);
 //output: 0,1,2,3,4,5......
 const subscribe = source.subscribe(val => console.log(val));
 
