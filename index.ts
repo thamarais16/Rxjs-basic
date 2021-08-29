@@ -14,7 +14,7 @@ delay
 
 
 /**
- * @description Observable is the function that convert ordinary stream of data into observable streaam of data. it emit value asynchronously from stream asynchronously. emits error when stream errors out. emit complete signal when stream completes.
+ * @description Observable is the function that convert ordinary stream of data into observable streaam of data. Observeable is wrapper around the ordinary stream of sata.it emit value  from data stream asynchronously. emits error when stream errors out. emit complete signal when stream completes.
  * 
  * @description Tap Operator is useful for logging, debugging the stream. It does not modify the stream any way.
  * 
@@ -24,7 +24,9 @@ delay
  * 
  * @description Pipe is an observable method which is used for composing operators. Pipe accepts rxjs operatos as a argument. Each operatos is seperated by comma. we can also use pipe as a stand alone or instance method. The order of operator is important for pipe method.
  * 
- * @description delay the emission observable by a given timeout .
+ * @description delay Operator delay the emission of item from source observable by a given timeout.
+ * 
+ * @description delayWhen Operator delay the emission of item from source observable by a given timeout determined by the emissions of another observable.
 */
 
 
@@ -92,7 +94,6 @@ function *gen(){
 }
 
 /* 4*/
-
 let custompipe = pipe(
   tap( val => { console.log("tap "+ val) } ),
   filter( val => { return val > 2 } ), 
@@ -109,11 +110,11 @@ let pipes = new Observable((observe)=>{
   observe.complete();
 })
 
-custompipe(pipes).subscribe(
-  (val) => { console.log(val)},
-  (err) => {console.log("pipe complete")},
-  () => {console.log("pipe complete")}
-);
+// custompipe(pipes).subscribe(
+//   (val) => { console.log(val)},
+//   (err) => {console.log("pipe complete")},
+//   () => {console.log("pipe complete")}
+// );
 
 
 let pipes2 = new Observable((observe)=>{
@@ -128,23 +129,34 @@ let pipes2 = new Observable((observe)=>{
   custompipe
 )
 
-pipes2.subscribe(
-  (val) => { console.log(val)},
-  (err) => {console.log("pipe complete")},
-  () => {console.log("pipe complete")}
-);
+// pipes2.subscribe(
+//   (val) => { console.log(val)},
+//   (err) => {console.log("pipe complete")},
+//   () => {console.log("pipe complete")}
+// );
 
+/* 5*/
 of(1, 2, 3, 4, 5)
 .pipe(
+  delay(10000),
   tap(val => console.log("Before " + val)),
-  delay(10 * 1000)
 )
-.subscribe(
-  val => console.log(val),
-  e => console.log(e),
-  () => console.log("Complete")
-);
+// .subscribe(
+//   val => console.log(val),
+//   e => console.log(e),
+//   () => console.log("Complete")
+// );
 
+
+
+/*
+  timer takes a second argument, how often to emit subsequent values
+  in this case we will emit first value after 1 second and subsequent
+  values every 2 seconds after
+*/
+const source = timer(1000, 2000);
+//output: 0,1,2,3,4,5......
+const subscribe = source.subscribe(val => console.log(val));
 
 
 
