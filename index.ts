@@ -10,7 +10,8 @@ import {
   filter,
   pipe,
   delay,
-  delayWhen
+  delayWhen,
+  pairwise
 } from 'rxjs';
 
 /**
@@ -178,13 +179,14 @@ let times = timer(10000).pipe(
 
 /* 7*/
 let customPipes =  pipe(
-  filter(item =>  item > 2),
+  delay(10000),
+  pairwise()
   // delayWhen(item => timer(10*1000).pipe(
   //   tap(item =>  (item))
   // )
-  delay(10000)
+  
 )
-let of3 = of([1, 2, 3, 4, 5])
+let of3 = of(1, 2, 3, 4, 5)
 
 customPipes(of3).subscribe(data => {console.log(data)})
 
