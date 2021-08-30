@@ -9,7 +9,8 @@ import {
   from,
   filter,
   pipe,
-  delay
+  delay,
+  delayWhen
 } from 'rxjs';
 
 /**
@@ -23,11 +24,13 @@ import {
  *
  * @description Pipe is an observable method which is used for composing operators. Pipe accepts rxjs operatos as a argument. Each operatos is seperated by comma. we can also use pipe as a stand alone or instance method. The order of operator is important for pipe method.
  *
+ * @description timer After given duration, emit numbers in sequence every specified duration. Timer is a rxjs observable that emits the value by given timeout & continue emission of values at specified interval.
+ * 
  * @description delay Operator delay the emission of item from source observable by a given timeout.
  *
  * @description delayWhen Operator delay the emission of item from source observable by a given timeout determined by the emissions of another observable.
  *
- * @description timer After given duration, emit numbers in sequence every specified duration
+ * 
  */
 
 /**1 */
@@ -164,9 +167,40 @@ of(1, 2, 3, 4, 5).pipe(
   in this case we will emit first value after 1 second and subsequent
   values every 2 seconds after
 */
-const source = timer(2000);
-//output: 0,1,2,3,4,5......
-const subscribe = source.subscribe(val => console.log(val));
+let times = timer(10000).pipe(
+  tap(event => console.log(event)),
+)
+
+// times.subscribe(val => { console.log(val)},
+// e => { console.log(e)},
+// () => { console.log("completed timer")},
+// );
+
+/* 7*/
+let customPipes =  pipe(
+  filter(item =>  item > 2),
+  // delayWhen(item => timer(10*1000).pipe(
+  //   tap(item =>  (item))
+  // )
+  delay(10000)
+)
+let of3 = of([1, 2, 3, 4, 5])
+
+customPipes(of3).subscribe(data => {console.log(data)})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * 
