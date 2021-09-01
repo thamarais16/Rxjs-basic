@@ -11,8 +11,7 @@ import {
   pipe,
   delay,
   delayWhen,
-  pairwise,
-from
+  pairwise
 } from 'rxjs';
 
 /**
@@ -214,11 +213,11 @@ let delays = from('12345')
 /* 9*/
 let pairs = new Observable((observe)=>{
   timer(3*1000),
-    observe.next(1)
+    observe.next(1),
   timer(6*1000),
-    observe.next(2)
+    observe.next(2),
   timer(9*1000),
-    observe.next(3)
+    observe.next(3),
   timer(12*1000),
     observe.complete()
 }).pipe(
@@ -229,4 +228,4 @@ pairs.subscribe(
   data => { console.log(data)},
   e => { console.log(e)},
   () => { console.log("pairwise completed")},
-) 
+)  
