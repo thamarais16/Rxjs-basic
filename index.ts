@@ -11,28 +11,33 @@ import {
   pipe,
   delay,
   delayWhen,
-  pairwise
+  pairwise,
+from
 } from 'rxjs';
 
 /**
- * @description Observable is the function that convert ordinary stream of data into observable streaam of data. Observeable is wrapper around the ordinary stream of sata.it emit value  from data stream asynchronously. emits error when stream errors out. emit complete signal when stream completes.
+ * @description 1) Observable is the function that convert ordinary stream of data into observable streaam of data. Observeable is wrapper around the ordinary stream of sata.it emit value  from data stream asynchronously. emits error when stream errors out. emit complete signal when stream completes.
  *
- * @description Tap Operator is useful for logging, debugging the stream. It does not modify the stream any way.
+ * @description 2) Tap Operator is useful for logging, debugging the stream. It does not modify the stream any way.
  *
- * @description of Operator creates observable from argumnents we pass in it. we can pass any number of argumnets.it emit each argumnets separately one after other.
+ * @description 3) of Operator creates observable from argumnents we pass in it. we can pass any number of argumnets.it emit each argumnets separately one after other.
  *
- * @description from Operator creates observable from argumnents we pass in it. we can pass only one argument in it. it iterates over the argument and emits each value.
+ * @description 4) from Operator creates observable from argumnents we pass in it. we can pass only one argument in it. it iterates over the argument and emits each value.
  *
- * @description Pipe is an observable method which is used for composing operators. Pipe accepts rxjs operatos as a argument. Each operatos is seperated by comma. we can also use pipe as a stand alone or instance method. The order of operator is important for pipe method.
+ * @description 5) Pipe is an observable method which is used for composing operators. Pipe accepts rxjs operatos as a argument. Each operatos is seperated by comma. we can also use pipe as a stand alone or instance method. The order of operator is important for pipe method.
  *
- * @description timer After given duration, emit numbers in sequence every specified duration. Timer is a rxjs observable that emits the value by given timeout & continue emission of values at specified interval.
- * 
- * @description delay Operator delay the emission of item from source observable by a given timeout.
+ * @description 6) timer After given duration, emit numbers in sequence every specified duration. Timer is a rxjs observable that emits the value by given timeout & continue emission of values at specified interval.
  *
- * @description delayWhen Operator delay the emission of item from source observable by a given timeout determined by the emissions of another observable.
+ * @description 7) delay Operator delay the emission of item from source observable by a given timeout.
  *
- * 
+ * @description 8) delayWhen Operator delay the emission of item from source observable by a given timeout determined by the emissions of another observable.
+ *
+ * @description 9) pairwise operator return current emission value with previous emitted value.
+ *
+ * @description 10) Merge Operator combines multiple observables into an single observable.
+ *
  */
+
 
 /**1 */
 let create = Observable.create(observer => {
@@ -60,6 +65,7 @@ let create = Observable.create(observer => {
   () => console.log("emit completed")
 ); */
 
+
 /**2 */
 let ofs = of([1, 2, 3], 100, 'Hello');
 
@@ -76,6 +82,7 @@ let ofs2 = of(['Thamarai'], ['selvan']);
 //   (err)=> {  console.log(err) },
 //   ()=> {  console.log("ofs2 completed") },
 // );
+
 
 /**3 */
 let map = new Map();
@@ -108,6 +115,7 @@ function* gen() {
     i++;
   }
 }
+
 
 /* 4*/
 let custompipe = pipe(
@@ -151,6 +159,7 @@ let pipes2 = new Observable(observe => {
 //   () => {console.log("pipe complete")}
 // );
 
+
 /* 5*/
 of(1, 2, 3, 4, 5).pipe(
   delay(10000),
@@ -162,52 +171,62 @@ of(1, 2, 3, 4, 5).pipe(
 //   () => console.log("Complete")
 // );
 
+
 /* 6*/
 /*
   timer takes a second argument, how often to emit subsequent values
   in this case we will emit first value after 1 second and subsequent
   values every 2 seconds after
 */
-let times = timer(10000).pipe(
-  tap(event => console.log(event)),
-)
+let times = timer(10000).pipe(tap(event => console.log(event)));
 
 // times.subscribe(val => { console.log(val)},
 // e => { console.log(e)},
 // () => { console.log("completed timer")},
 // );
 
+
 /* 7*/
-let customPipes =  pipe(
-  delay(10000),
-  pairwise()
-  // delayWhen(item => timer(10*1000).pipe(
-  //   tap(item =>  (item))
-  // )
-  
+let customPipes = pipe(
+  delay(2 * 1000),
+);
+let of3 = of(1, 2, 3, 4, 5);
+
+// customPipes(of3).subscribe(data => {
+//   console.log(data);
+// });
+
+
+/* 8*/
+let pips = pipe(
+  delayWhen(item => timer(7*1000)),
+  //tap(item => console.log(item))
 )
-let of3 = of(1, 2, 3, 4, 5)
+let delays = from('12345')
 
-customPipes(of3).subscribe(data => {console.log(data)})
-
-
-
-
-
-
+// pips(delays).subscribe(
+//   data => { console.log(data)},
+//   e => { console.log(e)},
+//   () => { console.log("delay when completed")},
+// ); 
 
 
+/* 9*/
+let pairs = new Observable((observe)=>{
+  timer(3*1000),
+    observe.next(1)
+  timer(6*1000),
+    observe.next(2)
+  timer(9*1000),
+    observe.next(3)
+  timer(12*1000),
+    observe.complete()
+}).pipe(
+  pairwise()
+)
 
-
-
-
-
-
-
-/**
- * 
-  of('World')
-    .pipe(map(name => `Hello, ${name}!`))
-      .subscribe(console.log);
-*/
-let num = 123;
+pairs.subscribe(
+  data => { console.log(data)},
+  e => { console.log(e)},
+  () => { console.log("pairwise completed")},
+) 
