@@ -212,14 +212,12 @@ let delays = from('12345')
 
 /* 9*/
 let pairs = new Observable((observe)=>{
-  timer(3*1000),
-    observe.next(1),
-  timer(6*1000),
-    observe.next(2),
-  timer(9*1000),
-    observe.next(3),
-  timer(12*1000),
-    observe.complete()
+  setTimeout(()=>{observe.next(1)},3*1000);
+  setTimeout(()=>{observe.next(2)},6*1000);
+  setTimeout(()=>{observe.next(3)},9*1000);
+  setTimeout(()=>{observe.next(4)},12*1000);
+  setTimeout(()=>{observe.complete()},15*1000); 
+    
 }).pipe(
   pairwise()
 )
