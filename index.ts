@@ -203,27 +203,27 @@ let pips = pipe(
 )
 let delays = from('12345')
 
-// pips(delays).subscribe(
-//   data => { console.log(data)},
-//   e => { console.log(e)},
-//   () => { console.log("delay when completed")},
-// ); 
+pips(delays).subscribe(
+  data => { console.log(data)},
+  e => { console.log(e)},
+  () => { console.log("delay when completed")},
+); 
 
 
 /* 9*/
-let pairs = new Observable((observe)=>{
-  setTimeout(()=>{observe.next(1)},3*1000);
-  setTimeout(()=>{observe.next(2)},6*1000);
-  setTimeout(()=>{observe.next(3)},9*1000);
-  setTimeout(()=>{observe.next(4)},12*1000);
-  setTimeout(()=>{observe.complete()},15*1000); 
+// let pairs = new Observable((observe)=>{
+//   setTimeout(()=>{observe.next(1)},3*1000);
+//   setTimeout(()=>{observe.next(2)},6*1000);
+//   setTimeout(()=>{observe.next(3)},9*1000);
+//   setTimeout(()=>{observe.next(4)},12*1000);
+//   setTimeout(()=>{observe.complete()},15*1000); 
     
-}).pipe(
-  pairwise()
-)
+// }).pipe(
+//   pairwise()
+// )
 
-pairs.subscribe(
-  data => { console.log(data)},
-  e => { console.log(e)},
-  () => { console.log("pairwise completed")},
-)  
+// pairs.subscribe(
+//   data => { console.log(data)},
+//   e => { console.log(e)},
+//   () => { console.log("pairwise completed")},
+// )  
